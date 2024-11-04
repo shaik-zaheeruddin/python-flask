@@ -1,29 +1,54 @@
 Div Solution API Documentation
 
-# Div Solution API
+# Div Solution API Documentation
 
 ## Overview
 
-This API provides a robust solution for user authentication, account management, and role-based access control. Built with Flask and PostgreSQL, the API leverages JWT tokens for secure session handling and bcrypt for password hashing.
+The Div Solution API is designed to facilitate secure and efficient user authentication, account management, and role-based access control. This API is developed using Flask and PostgreSQL, leveraging JWT tokens for session handling and bcrypt for secure password hashing. It is built to ensure scalability and robust handling of user data and roles.
 
-The API has three main sections:
+### Key Features:
 
-1.  **Authentication** - Handles user signup and login.
-2.  **Admin** - Allows admin users to add, update, view, and delete accounts.
-3.  **Super Admin** - Allows super admin users to modify user roles and access levels.
+- **User Authentication**: Secure login and signup endpoints.
+- **Account Management**: Admin-level functionalities to manage accounts.
+- **Role-Based Access Control**: Ensures users have the appropriate permissions based on their roles.
 
 ## Project Structure
 
-- **Flask**: A micro web framework used to set up the API.
-- **PostgreSQL**: Database for storing user and account information.
-- **JWT**: JSON Web Tokens for secure user authentication.
-- **bcrypt**: Password hashing for secure storage of user credentials.
+- **Flask**: A lightweight web framework used to build the API.
+- **PostgreSQL**: A reliable and powerful database system for storing user and account data.
+- **JWT (JSON Web Tokens)**: Used for secure and stateless user sessions.
+- **bcrypt**: Implements password hashing for secure credential storage.
 
-### Postman API Collection
+## How to Run the App
 
-Include the following image of the Postman collection structure for a visual reference to API endpoints.
+### Prerequisites:
 
-![Postman API Collection](image.png)
+Ensure you have Python installed along with `pip`.
+
+1.  **Clone the repository**:
+
+        git clone https://github.com/username/div-solution-api.git
+        cd div-solution-api
+
+2.  **Install dependencies**:
+
+        pip install -r requirements.txt
+
+3.  **Run the application**:
+
+        python app.py
+
+4.  **Access the API**:
+
+    By default, the API will be available at `http://localhost:5000`.
+
+### Environment Variables:
+
+Configure the environment variables needed for the API in a `.env` file or set them in your environment:
+
+- `SECRET_KEY`
+- `DATABASE_URL`
+- `JWT_SECRET_KEY`
 
 ## API Endpoints
 
@@ -35,15 +60,15 @@ Include the following image of the Postman collection structure for a visual ref
 
 **Request Body**:
 
-{
-"username": "string",
-"password": "string"
-}
+    {
+      "username": "string",
+      "password": "string"
+    }
 
 **Responses**:
 
 - `201 Created`: User created successfully.
-- `400 Bad Request`: Missing username or password, or username already exists.
+- `400 Bad Request`: Missing username or password, or the username already exists.
 
 #### POST /login
 
@@ -51,10 +76,10 @@ Include the following image of the Postman collection structure for a visual ref
 
 **Request Body**:
 
-{
-"username": "string",
-"password": "string"
-}
+    {
+      "username": "string",
+      "password": "string"
+    }
 
 **Responses**:
 
@@ -63,37 +88,35 @@ Include the following image of the Postman collection structure for a visual ref
 
 ### 2\. Admin Endpoints
 
-Admin users can manage accounts within the system.
-
 #### POST /accounts
 
-**Description**: Adds a new account under the current admin user.
+**Description**: Creates a new account managed by the current admin.
 
 **Request Body**:
 
-{
-"name": "string",
-"email": "string",
-"contact_number": "string"
-}
+    {
+      "name": "string",
+      "email": "string",
+      "contact_number": "string"
+    }
 
 **Responses**:
 
 - `201 Created`: Account created successfully.
 - `400 Bad Request`: Missing required fields.
-- `409 Conflict`: Account with this email already exists.
+- `409 Conflict`: An account with this email already exists.
 
 #### PUT /accounts/<id>
 
-**Description**: Updates an existing account's details.
+**Description**: Updates an existing account's information.
 
 **Request Body**:
 
-{
-"name": "string",
-"email": "string",
-"contact_number": "string"
-}
+    {
+      "name": "string",
+      "email": "string",
+      "contact_number": "string"
+    }
 
 **Responses**:
 
@@ -112,7 +135,7 @@ Admin users can manage accounts within the system.
 
 #### DELETE /accounts/<id>
 
-**Description**: Deletes a specific account (Admin only).
+**Description**: Deletes a specific account.
 
 **Responses**:
 
@@ -123,17 +146,17 @@ Admin users can manage accounts within the system.
 
 #### PATCH /user/<id>
 
-**Description**: Allows a super admin to update a user's role (Admin/Client).
+**Description**: Allows a super admin to update a user's role.
 
 **Headers**:
 
-Authorization: Super Admin Key
+    Authorization: Super Admin Key
 
 **Request Body**:
 
-{
-"role": "admin" | "client"
-}
+    {
+      "role": "admin" | "client"
+    }
 
 **Responses**:
 
@@ -145,19 +168,32 @@ Authorization: Super Admin Key
 
 ### JWT Authentication
 
-JWT tokens are used to authenticate users and provide access to protected endpoints. After logging in, the user receives a token, which must be included in the headers (Authorization: Bearer <token>) for subsequent requests.
+The API uses JWT tokens for secure access to endpoints. After logging in, users receive a token to include in the request headers:
+
+    Authorization: Bearer <token>
 
 ### Role-Based Access Control
 
-The API supports role-based access control with two main roles:
+The API includes role-based access control to manage user permissions:
 
-- **Client**: Basic user with limited access.
-- **Admin**: Can manage accounts within the system.
-- **Super Admin**: Can update user roles and has higher privileges.
+- **Client**: Basic access with limited permissions.
+- **Admin**: Permissions to manage accounts.
+- **Super Admin**: Permissions to modify user roles and access levels.
 
 ### Database Models
 
-The database includes two main models:
+#### User Model
 
-- **User**: Contains fields for username, password, role, created_at, and updated_at.
-- **Account**: Contains fields for name, email, contact number, added_by (referring to the admin who created the account), and created_at.
+- **username**: Unique identifier for the user.
+- **password**: Securely hashed using bcrypt.
+- **role**: Defines user access (e.g., admin, client).
+- **created_at**: Timestamp of user creation.
+- **updated_at**: Timestamp of last update.
+
+#### Account Model
+
+- **name**: Name associated with the account.
+- **email**: Unique email for communication.
+- **contact_number**: Phone number for the account.
+- **added_by**: Refers to the admin who created the account.
+- **created_at**: Timestamp of account creation.
