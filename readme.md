@@ -27,7 +27,7 @@ Ensure you have Python installed along with `pip`.
 
 1.  **Clone the repository**:
 
-        git clone https://github.com/username/div-solution-api.git
+        git clone https://github.com/shaik-zaheeruddin/div-solution-api.git
         cd div-solution-api
 
 2.  **Install dependencies**:
