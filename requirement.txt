@@ -5,3 +5,4 @@ bcrypt
 Flask-SQLAlchemy
 SQLAlchemy
 dotenv
+pytest
