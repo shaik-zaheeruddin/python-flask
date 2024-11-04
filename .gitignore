@@ -1,2 +1,4 @@
 div_sol
 div_sol.pub
+__pycache__
+.pytest_cache
