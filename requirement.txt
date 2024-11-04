@@ -3,3 +3,5 @@ Flask-JWT-Extended
 psycopg2-binary 
 bcrypt 
 Flask-SQLAlchemy
+SQLAlchemy
+dotenv
